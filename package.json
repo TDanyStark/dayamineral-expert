@@ -12,6 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.3.3"
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.3",
+    "canvas-confetti": "^1.9.4",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0"
   }
 }

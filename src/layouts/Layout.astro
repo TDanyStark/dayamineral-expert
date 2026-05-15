@@ -1,14 +1,18 @@
+---
+import '../styles/global.css' 
+import { URL_BASE } from '../config'
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<link rel="icon" type="image/png" href={`${URL_BASE}/favicon.png`} />
+		<title>DAYABENEFICIOS</title>
 	</head>
-	<body>
+	<body class="font-brandon">
 		<slot />
 	</body>
 </html>

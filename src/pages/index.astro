@@ -1,11 +1,61 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from "@/components/Header.astro";
+import { URL_BASE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <div class="min-h-screen flex flex-col relative">
+    <div class="absolute top-0 left-0 right-0 z-10">
+      <Header />
+    </div>
+    <main class="w-full flex-1 flex flex-col lg:flex-row">
+      <div class="lg:block lg:w-1/2 lg:min-h-screen">
+        <img
+          class="w-full h-full object-cover"
+          src={`${URL_BASE}/images/img_home.webp`}
+          alt="Imagen Principal"
+        />
+      </div>
+      <div
+        class="w-7xl mx-auto max-w-full p-4 md:p-6 flex-1 flex items-center justify-end lg:w-1/2 lg:mx-0 lg:justify-center lg:min-h-screen bg-home-bottom-radial"
+      >
+        <div class="w-full lg:max-w-xl">
+          <div class="flex items-center gap-4 flex-col mb-6 bg-linear-(--gradient-button) rounded-full py-3 px-8 ">
+            <img
+              src={`${URL_BASE}/images/dayapoint.webp`}
+              alt="Logo Datapoint"
+              class="w-12 h-auto inline-block mr-4"
+            />
+            <h1
+              class="text-4xl md:text-6xl font-bold text-white"
+            >
+              DAYABENEFICIOS
+            </h1>
+          </div>
+
+          <p class="mt-8 text-2xl xs:text-3xl text-black">
+            Para descubrir qué le aporta cada componente de Dayamineral al
+            cuerpo, arrastre cada <strong
+              >vitamina y mineral hasta la casilla de los beneficios
+              correspondientes.</strong
+            >
+          </p>
+          <div class="mt-16 flex justify-end">
+            <a
+              class="text-3xl text-white font-bold py-3 px-6 border border-white rounded-full flex items-center bg-linear-(--gradient-button-reverse) transition-transform transform hover:scale-105"
+              href={`${URL_BASE}/quiz`}
+            >
+              COMENZAR
+              <img
+                class="w-auto h-10 ml-4"
+                src={`${URL_BASE}/iconos/arrow.webp`}
+                alt="Arrow Right"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 </Layout>

@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Brandon";
+  src: url("/apps/abbott/dayabeneficios/fonts/Brandon_reg.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Brandon";
+  src: url("/apps/abbott/dayabeneficios/fonts/Brandon_blk.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Brandon";
+  src: url("/apps/abbott/dayabeneficios/fonts/Brandon_light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@theme{
+  --color-vitamina-a: #d98125;
+
+  --font-brandon: "Brandon", sans-serif;
+  --font-georgia: Georgia, serif;
+
+  --breakpoint-xs: 26rem;
+}
+
+

@@ -1,0 +1,44 @@
+---
+import { URL_BASE } from "@/config";
+
+interface Props {
+  abbott?: "white" | "black";
+}
+
+const abbott = Astro.props.abbott || "white";
+---
+
+<header
+  class="w-7xl mx-auto max-w-full p-4 md:p-6 relative"
+>
+  <div class="flex justify-between">
+    <div>
+      <a href={URL_BASE}>
+        <img
+          class="w-32"
+          src={`${URL_BASE}/logos/abbott_${abbott}.webp`}
+          alt={`Logo Abbott ${abbott.charAt(0).toUpperCase() + abbott.slice(1)}`}
+        />
+      </a>
+    </div>
+    <div>
+      <img
+        class="w-44 md:hidden"
+        src={`${URL_BASE}/logos/logo_dayamineral_white.webp`}
+        alt="Logo Dayamineral White"
+      />
+      <img
+        class="hidden w-44 md:block"
+        src={`${URL_BASE}/logos/logo_dayamineral_color.webp`}
+        alt="Logo Dayamineral Color"
+      />
+    </div>
+  </div>
+
+  <!-- agrega el siguiente codigo arriba a la derecha pero con una inclinacion de 90grados CAC-26-0114 -->
+  <div
+    class="absolute top-16 -right-2 lg:-right-8 xl:-right-12 transform -rotate-90"
+  >
+    <span class="text-sm text-white"></span>
+  </div>
+</header>

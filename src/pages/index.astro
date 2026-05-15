@@ -11,7 +11,7 @@ import Layout from "@/layouts/Layout.astro";
     </div>
     <main class="w-full flex-1 flex flex-col lg:flex-row">
       <div
-        class="w-7xl mx-auto max-w-full p-4 md:p-6 flex-1 flex items-center justify-end lg:w-1/2 lg:mx-0 lg:justify-center bg-home-bottom-radial bg-no-repeat bg-center bg-cover"
+        class="w-7xl mx-auto max-w-full p-4 lg:p-6 flex-1 flex items-center justify-end lg:w-1/2 lg:mx-0 lg:justify-center bg-home-bottom-radial bg-no-repeat bg-center bg-cover pt-30 pb-20"
         style={`background-image: url(${URL_BASE}/images/bg_game.webp);`}
       >
         <div class="w-full lg:max-w-xl">
@@ -20,20 +20,37 @@ import Layout from "@/layouts/Layout.astro";
           >
             <h1 class="text-4xl md:text-6xl font-bold text-white text-center">
               DAYAMINERAL
-              <span>EXPERT</span>
+              <span
+                class="bg-white/30 py-1.5 px-10 rounded-full mt-1 inline-block"
+                style="font-size: 1.3em;">EXPERT</span
+              >
             </h1>
           </div>
 
-          <div class="flex items-center gap-4">
+          <div class="flex flex-col lg:flex-row items-center gap-4">
             <img
               src={`${URL_BASE}/iconos/icon_cup.webp`}
               alt="Icono copa"
               class="w-auto h-24"
             />
-            <p class="text-2xl xs:text-3xl text-white">
+            <p class="text-2xl xs:text-3xl text-white text-center lg:text-left">
               ATRAPE EN EL AIRE 8 BENEFICIOS DE DAYAMINERAL Y ROMPA SU RECORD DE
               DAYAPOINTS.
             </p>
+          </div>
+
+          <div class="flex justify-center mt-10 lg:hidden">
+            <a
+              class="text-3xl text-white font-bold py-3 px-6 rounded-full flex items-center bg-linear-(--gradient-purple) transition-transform transform hover:scale-105 gap-4"
+              href={`${URL_BASE}/game`}
+            >
+              <img
+                class="w-auto h-10 ml-4"
+                src={`${URL_BASE}/iconos/icon_padlock.webp`}
+                alt="Arrow Right"
+              />
+              COMENZAR
+            </a>
           </div>
         </div>
       </div>
@@ -44,8 +61,8 @@ import Layout from "@/layouts/Layout.astro";
           alt="Imagen Principal"
         />
         <a
-          class="absolute bottom-10 right-10 text-3xl text-white font-bold py-3 px-6 border border-white rounded-full flex items-center bg-linear-(--gradient-purple) transition-transform transform hover:scale-105 gap-4"
-          href={`${URL_BASE}/quiz`}
+          class="hidden absolute bottom-10 right-10 text-3xl text-white font-bold py-3 px-6 rounded-full lg:flex items-center bg-linear-(--gradient-purple) transition-transform transform hover:scale-105 gap-4"
+          href={`${URL_BASE}/game`}
         >
           <img
             class="w-auto h-10 ml-4"

@@ -1,5 +1,6 @@
 ---
 import Header from "@/components/Header.astro";
+import GameApp from "@/components/GameApp.astro";
 import { URL_BASE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 ---
@@ -9,8 +10,8 @@ import Layout from "@/layouts/Layout.astro";
     <div class="absolute top-0 left-0 right-0 z-10">
       <Header dayapoints="white" />
     </div>
-    <main class="w-full flex-1 flex flex-col lg:flex-row">
-      
+    <main>
+      <GameApp />
     </main>
   </div>
 </Layout>

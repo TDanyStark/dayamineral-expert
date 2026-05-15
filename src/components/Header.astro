@@ -17,7 +17,7 @@ const dayapoints = Astro.props.dayapoints || "white";
     <div>
       <a href={URL_BASE}>
         <img
-          class="w-32"
+          class="w-32 md:w-24 lg:w-32"
           src={`${URL_BASE}/logos/abbott_${abbott}.webp`}
           alt={`Logo Abbott ${abbott.charAt(0).toUpperCase() + abbott.slice(1)}`}
         />
@@ -25,12 +25,12 @@ const dayapoints = Astro.props.dayapoints || "white";
     </div>
     <div>
       <img
-        class="w-44 lg:hidden"
+        class="w-44 md:w-32 lg:w-44 lg:hidden"
         src={`${URL_BASE}/logos/logo_dayamineral_${dayapoints}.webp`}
         alt={`Logo Dayamineral ${dayapoints.charAt(0).toUpperCase() + dayapoints.slice(1)}`}
       />
       <img
-        class="hidden w-44 lg:block"
+        class="hidden w-44 md:w-32 lg:w-44 lg:block"
         src={`${URL_BASE}/logos/logo_dayamineral_${dayapoints}.webp`}
         alt={`Logo Dayamineral ${dayapoints.charAt(0).toUpperCase() + dayapoints.slice(1)}`}
       />

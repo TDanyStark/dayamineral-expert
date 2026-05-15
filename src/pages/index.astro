@@ -10,51 +10,50 @@ import Layout from "@/layouts/Layout.astro";
       <Header />
     </div>
     <main class="w-full flex-1 flex flex-col lg:flex-row">
-      <div class="lg:block lg:w-1/2 lg:min-h-screen">
-        <img
-          class="w-full h-full object-cover"
-          src={`${URL_BASE}/images/img_home.webp`}
-          alt="Imagen Principal"
-        />
-      </div>
       <div
-        class="w-7xl mx-auto max-w-full p-4 md:p-6 flex-1 flex items-center justify-end lg:w-1/2 lg:mx-0 lg:justify-center lg:min-h-screen bg-home-bottom-radial"
+        class="w-7xl mx-auto max-w-full p-4 md:p-6 flex-1 flex items-center justify-end lg:w-1/2 lg:mx-0 lg:justify-center bg-home-bottom-radial bg-no-repeat bg-center bg-cover"
+        style={`background-image: url(${URL_BASE}/images/bg_game.webp);`}
       >
         <div class="w-full lg:max-w-xl">
-          <div class="flex items-center gap-4 flex-col mb-6 bg-linear-(--gradient-button) rounded-full py-3 px-8 ">
-            <img
-              src={`${URL_BASE}/images/dayapoint.webp`}
-              alt="Logo Datapoint"
-              class="w-12 h-auto inline-block mr-4"
-            />
-            <h1
-              class="text-4xl md:text-6xl font-bold text-white"
-            >
-              DAYABENEFICIOS
+          <div
+            class="flex items-center gap-4 flex-col mb-6 rounded-full py-3 px-8"
+          >
+            <h1 class="text-4xl md:text-6xl font-bold text-white text-center">
+              DAYAMINERAL
+              <span>EXPERT</span>
             </h1>
           </div>
 
-          <p class="mt-8 text-2xl xs:text-3xl text-black">
-            Para descubrir qué le aporta cada componente de Dayamineral al
-            cuerpo, arrastre cada <strong
-              >vitamina y mineral hasta la casilla de los beneficios
-              correspondientes.</strong
-            >
-          </p>
-          <div class="mt-16 flex justify-end">
-            <a
-              class="text-3xl text-white font-bold py-3 px-6 border border-white rounded-full flex items-center bg-linear-(--gradient-button-reverse) transition-transform transform hover:scale-105"
-              href={`${URL_BASE}/quiz`}
-            >
-              COMENZAR
-              <img
-                class="w-auto h-10 ml-4"
-                src={`${URL_BASE}/iconos/arrow.webp`}
-                alt="Arrow Right"
-              />
-            </a>
+          <div class="flex items-center gap-4">
+            <img
+              src={`${URL_BASE}/iconos/icon_cup.webp`}
+              alt="Icono copa"
+              class="w-auto h-24"
+            />
+            <p class="text-2xl xs:text-3xl text-white">
+              ATRAPE EN EL AIRE 8 BENEFICIOS DE DAYAMINERAL Y ROMPA SU RECORD DE
+              DAYAPOINTS.
+            </p>
           </div>
         </div>
+      </div>
+      <div class="lg:block lg:w-1/2 relative">
+        <img
+          class="w-full h-full max-h-screen object-cover"
+          src={`${URL_BASE}/images/img_home.webp`}
+          alt="Imagen Principal"
+        />
+        <a
+          class="absolute bottom-10 right-10 text-3xl text-white font-bold py-3 px-6 border border-white rounded-full flex items-center bg-linear-(--gradient-purple) transition-transform transform hover:scale-105 gap-4"
+          href={`${URL_BASE}/quiz`}
+        >
+          <img
+            class="w-auto h-10 ml-4"
+            src={`${URL_BASE}/iconos/icon_padlock.webp`}
+            alt="Arrow Right"
+          />
+          COMENZAR
+        </a>
       </div>
     </main>
   </div>

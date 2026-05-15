@@ -34,4 +34,7 @@
   --breakpoint-xs: 26rem;
 }
 
+button{
+  cursor: pointer;
+}
 

@@ -8,7 +8,7 @@ import { URL_BASE } from "@/config";
 
 <section
   id="game-root"
-  class="relative w-full min-h-screen pt-28 md:pt-32 pb-8 px-4"
+  class="relative w-full min-h-screen pt-28 pb-8 px-4"
 >
   <!-- Status bar -->
   <div
@@ -16,10 +16,13 @@ import { URL_BASE } from "@/config";
   >
     <div class="flex items-center gap-4 text-white">
       <div
-        class="bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-5 py-2"
+        id="game-score-pill"
+        class="bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-5 py-2 transition-colors"
       >
         <span class="text-sm md:text-base font-light">DAYAPOINTS:</span>
-        <span class="text-lg md:text-xl font-bold ml-1" id="game-score">000</span>
+        <span
+          class="text-lg md:text-xl font-bold ml-1 inline-block min-w-[3.5ch] text-center"
+          id="game-score">000</span>
       </div>
       <div
         class="bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-5 py-2"
@@ -27,8 +30,14 @@ import { URL_BASE } from "@/config";
         <span class="text-sm md:text-base font-light">FALTAN:</span>
         <span class="text-lg md:text-xl font-bold ml-1" id="game-remaining">15</span>
       </div>
+      <div
+        class="bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-5 py-2"
+      >
+        <span class="text-sm md:text-base font-light">ENCONTRADOS:</span>
+        <span class="text-lg md:text-xl font-bold ml-1" id="game-found">0</span>/8
+      </div>
     </div>
-    <div class="flex items-center gap-3">
+    <div class="flex justify-between lg:justify-end items-center gap-3">
       <button
         id="game-btn-restart"
         type="button"
@@ -73,11 +82,13 @@ import { URL_BASE } from "@/config";
     <div class="relative z-10 w-full h-full flex flex-col">
       <!-- modal header -->
       <div class="w-7xl max-w-full mx-auto p-4 md:p-6 flex justify-between items-center">
-        <img
+        <a href={URL_BASE} class="flex items-center gap-6">
+          <img
           src={`${URL_BASE}/logos/abbott_white.webp`}
           alt="Logo Abbott"
           class="w-24 md:w-32"
         />
+        </a>
         <img
           src={`${URL_BASE}/logos/logo_dayamineral_color.webp`}
           alt="Logo Dayamineral"
@@ -89,26 +100,26 @@ import { URL_BASE } from "@/config";
       <div
         class="flex-1 flex items-center justify-center md:justify-end px-6 md:pr-16 lg:pr-24"
       >
-        <div class="w-full max-w-xl text-white text-center md:text-left">
+        <div class="flex flex-col items-center w-full max-w-xl text-white text-center md:text-left">
           <div class="mb-4 md:mb-6">
             <span
               id="game-final-badge"
-              class="inline-flex items-center gap-3 bg-linear-(--gradient-purple) text-white font-bold py-3 px-6 rounded-full text-2xl md:text-4xl"
+              class="flex flex-col items-center gap-3 bg-linear-(--gradient-purple) text-white font-bold text-center rounded-full text-2xl md:text-4xl py-4 px-10"
             >
               <img
                 src={`${URL_BASE}/iconos/icon_padlock.webp`}
                 alt="badge icon"
-                class="w-7 h-7 md:w-9 md:h-9"
+                class="w-10 h-auto"
               />
               <span id="game-final-tier">DAYAMINERAL EXPERT</span>
             </span>
           </div>
           <p
             id="game-final-description"
-            class="text-lg md:text-2xl uppercase leading-snug mb-4"
+            class="text-lg text-center md:text-2xl uppercase leading-snug mb-4 text-black"
           >
           </p>
-          <p class="text-xl md:text-2xl font-bold mb-6">
+          <p class="text-xl text-center md:text-2xl font-bold mb-6 text-black">
             DAYAPOINTS: <span id="game-final-score">0</span>
           </p>
           <button
@@ -125,12 +136,24 @@ import { URL_BASE } from "@/config";
 </section>
 
 <style is:global>
+  #game-score-pill.score-negative {
+    background: rgba(220, 38, 38, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(255, 80, 80, 0.4), 0 6px 18px rgba(220, 38, 38, 0.35);
+  }
+  #game-score-pill.score-negative #game-score {
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
   .game-bubble {
     width: 15rem;
     height: 7.5rem;
     border-radius: 1.5rem;
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    opacity: 0;
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow:
@@ -151,8 +174,40 @@ import { URL_BASE } from "@/config";
     font-weight: 700;
     letter-spacing: 0.01em;
     overflow: hidden;
-    transition: opacity 0.35s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    will-change: transform;
+    will-change: transform, opacity;
+  }
+
+  /* Bubble grow-in: opacity + scale with elastic settle, like a real soap bubble forming. */
+  @keyframes game-bubble-spawn {
+    0% {
+      opacity: 0;
+      transform: translate3d(var(--bx, 0), var(--by, 0), 0) scale(0.2);
+      filter: blur(4px);
+    }
+    55% {
+      opacity: 1;
+      transform: translate3d(var(--bx, 0), var(--by, 0), 0) scale(1.08);
+      filter: blur(0);
+    }
+    78% {
+      transform: translate3d(var(--bx, 0), var(--by, 0), 0) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(var(--bx, 0), var(--by, 0), 0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .game-bubble.placed {
+    opacity: 1;
+    animation: game-bubble-spawn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* After spawn animation finishes, we set this class so JS-driven transforms aren't fighting CSS animation. */
+  .game-bubble.alive {
+    animation: none;
+    opacity: 1;
   }
 
   .game-bubble:hover {
@@ -209,23 +264,46 @@ import { URL_BASE } from "@/config";
   }
 
   .game-bubble.removing {
+    animation: none;
     opacity: 0;
-    transform: scale(0.85) translate3d(var(--bx, 0), var(--by, 0), 0);
+    transform: translate3d(var(--bx, 0), var(--by, 0), 0) scale(0.7);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Desktop free-floating */
-  @media (min-width: 768px) {
+  /* Tablet (iPad) free-floating: smaller bubbles + taller playfield to give breathing room */
+  @media (min-width: 768px) and (max-width: 1279px) {
     #game-playfield {
-      height: 70vh;
-      min-height: 520px;
+      height: auto;
+      min-height: 900px;
     }
     .game-bubble {
       position: absolute;
       top: 0;
       left: 0;
+      width: 12.5rem;
+      height: 6.75rem;
+      font-size: 0.74rem;
+      padding: 0.7rem 0.85rem;
     }
-    .game-bubble.removing {
-      transform: scale(0.85) translate3d(var(--bx, 0), var(--by, 0), 0);
+    .game-bubble .bubble-icon {
+      width: 1.65rem;
+      height: 1.65rem;
+    }
+    .game-bubble.feedback-content .bubble-text {
+      font-size: 0.92rem;
+    }
+  }
+
+  /* Desktop free-floating */
+  @media (min-width: 1280px) {
+    #game-playfield {
+      height: 70vh;
+      min-height: 560px;
+    }
+    .game-bubble {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   }
 
@@ -270,6 +348,15 @@ import { URL_BASE } from "@/config";
   const URL_BASE = (window as any).__URL_BASE__ ?? "/apps/abbott/dayamineral-expert";
   const ICON_TOUCH = `${URL_BASE}/iconos/icon_touch.webp`;
 
+  // Bubble dimensions must match CSS .game-bubble (responsive by breakpoint)
+  function bubbleSize(): { w: number; h: number } {
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const w = window.innerWidth;
+    if (w >= 1280) return { w: 15 * rem, h: 7.5 * rem };
+    if (w >= 768) return { w: 12.5 * rem, h: 6.75 * rem }; // tablet
+    return { w: 15 * rem, h: 7.5 * rem }; // mobile column (size irrelevant for physics)
+  }
+
   type ActiveBubble = {
     el: HTMLDivElement;
     benefit: Benefit;
@@ -281,12 +368,14 @@ import { URL_BASE } from "@/config";
     h: number;
     paused: boolean;
     locked: boolean;
+    spawning: boolean;
   };
 
   const state = {
     pool: [] as Benefit[],
     active: [] as ActiveBubble[],
     score: 0,
+    found: 0,
     interactionStarted: false,
     rafId: 0,
     isDesktop: false,
@@ -294,7 +383,9 @@ import { URL_BASE } from "@/config";
 
   const playfield = document.getElementById("game-playfield") as HTMLDivElement;
   const scoreEl = document.getElementById("game-score") as HTMLSpanElement;
+  const scorePill = document.getElementById("game-score-pill") as HTMLDivElement | null;
   const remainingEl = document.getElementById("game-remaining") as HTMLSpanElement;
+  const foundEl = document.getElementById("game-found") as HTMLSpanElement;
   const btnRestart = document.getElementById("game-btn-restart") as HTMLButtonElement;
   const btnFinish = document.getElementById("game-btn-finish") as HTMLButtonElement;
   const btnReplay = document.getElementById("game-btn-replay") as HTMLButtonElement;
@@ -304,6 +395,56 @@ import { URL_BASE } from "@/config";
   const finalScoreEl = document.getElementById("game-final-score") as HTMLSpanElement;
   const audioWin = document.getElementById("game-audio-win") as HTMLAudioElement;
   const audioFail = document.getElementById("game-audio-fail") as HTMLAudioElement;
+
+  // Make sure audio is unlocked by the first user gesture.
+  // Some mobile/desktop browsers require a user-initiated .play() at least once.
+  let audioUnlocked = false;
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    [audioWin, audioFail].forEach((a) => {
+      if (!a) return;
+      try {
+        a.volume = 1;
+        a.muted = true;
+        const p = a.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            a.pause();
+            a.currentTime = 0;
+            a.muted = false;
+          }).catch(() => {
+            a.muted = false;
+          });
+        } else {
+          a.pause();
+          a.currentTime = 0;
+          a.muted = false;
+        }
+      } catch {}
+    });
+  }
+  // Unlock on the first interaction anywhere in the game.
+  ["pointerdown", "touchstart", "keydown"].forEach((evt) =>
+    window.addEventListener(evt, unlockAudio, { once: true, passive: true }),
+  );
+
+  function playSound(audio: HTMLAudioElement) {
+    if (!audio) return;
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      const p = audio.play();
+      if (p && typeof p.catch === "function") {
+        p.catch((err) => {
+          // Helpful in dev to detect autoplay or decoding issues
+          console.warn("[game] audio play failed", err);
+        });
+      }
+    } catch (e) {
+      console.warn("[game] audio play threw", e);
+    }
+  }
 
   const BRAND_COLORS = ["#de8a17", "#fd0015", "#ae0061", "#ffffff"];
 
@@ -317,13 +458,23 @@ import { URL_BASE } from "@/config";
   }
 
   function updateScoreUI() {
-    const display = Math.max(0, state.score);
-    scoreEl.textContent = String(display).padStart(3, "0");
+    const value = state.score;
+    if (value < 0) {
+      scoreEl.textContent = "-" + String(Math.abs(value)).padStart(3, "0");
+      scorePill?.classList.add("score-negative");
+    } else {
+      scoreEl.textContent = String(value).padStart(3, "0");
+      scorePill?.classList.remove("score-negative");
+    }
   }
 
   function updateRemainingUI() {
     const total = state.pool.length + state.active.length;
     remainingEl.textContent = String(total);
+  }
+
+  function updateFoundUI() {
+    foundEl.textContent = String(state.found);
   }
 
   function tierForScore(score: number): { tier: string; desc: string } {
@@ -359,12 +510,8 @@ import { URL_BASE } from "@/config";
       <img class="bubble-icon" src="${ICON_TOUCH}" alt="touch" />
       <span class="bubble-text">${benefit.text}</span>
     `;
-    playfield.appendChild(el);
-
-    // Measure (bubble has fixed size via CSS but we read it for safety)
-    const rect = el.getBoundingClientRect();
-    const w = rect.width || 224;
-    const h = rect.height || 112;
+    // Compute size from CSS constants (avoids reading layout while still transitioning)
+    const { w, h } = bubbleSize();
 
     const bubble: ActiveBubble = {
       el,
@@ -377,13 +524,17 @@ import { URL_BASE } from "@/config";
       h,
       paused: false,
       locked: false,
+      spawning: true,
     };
 
     if (state.isDesktop) {
+      // Compute target position FIRST, set --bx/--by, then add the element to the DOM
+      // with the spawn animation already applied. The bubble grows in place at its
+      // final coordinates; no off-screen flash, no jump.
       const pf = playfield.getBoundingClientRect();
       const maxX = Math.max(0, pf.width - w);
       const maxY = Math.max(0, pf.height - h);
-      // Try non-overlapping placement (best effort)
+
       let placed = false;
       for (let i = 0; i < 30 && !placed; i++) {
         const x = Math.random() * maxX;
@@ -398,12 +549,49 @@ import { URL_BASE } from "@/config";
         bubble.x = Math.random() * maxX;
         bubble.y = Math.random() * maxY;
       }
+
       // Slow random velocity
       const angle = Math.random() * Math.PI * 2;
       const speed = 0.12 + Math.random() * 0.10;
       bubble.vx = Math.cos(angle) * speed;
       bubble.vy = Math.sin(angle) * speed;
-      applyTransform(bubble);
+
+      // Set position CSS vars BEFORE appending so the @keyframes animation
+      // uses the final coordinates from frame 0.
+      el.style.setProperty("--bx", `${bubble.x}px`);
+      el.style.setProperty("--by", `${bubble.y}px`);
+      // Apply initial transform so the bubble starts at its position even before
+      // the animation kicks in (covers the gap until the first animation frame).
+      el.style.transform = `translate3d(${bubble.x}px, ${bubble.y}px, 0) scale(0.2)`;
+      playfield.appendChild(el);
+
+      // Trigger spawn animation on the next frame to ensure the browser
+      // registers the initial state first (avoids the animation being skipped).
+      requestAnimationFrame(() => el.classList.add("placed"));
+
+      // When the spawn animation finishes, hand control back to the physics loop.
+      el.addEventListener(
+        "animationend",
+        () => {
+          bubble.spawning = false;
+          el.classList.add("alive");
+          // Re-sync transform from current physics state so there's no jump.
+          applyTransform(bubble);
+        },
+        { once: true },
+      );
+    } else {
+      // Mobile column: simple grow-in, no physics
+      playfield.appendChild(el);
+      requestAnimationFrame(() => el.classList.add("placed"));
+      el.addEventListener(
+        "animationend",
+        () => {
+          bubble.spawning = false;
+          el.classList.add("alive");
+        },
+        { once: true },
+      );
     }
 
     el.addEventListener("click", () => onBubbleClick(bubble));
@@ -425,9 +613,12 @@ import { URL_BASE } from "@/config";
 
   function applyTransform(b: ActiveBubble) {
     if (!state.isDesktop) return;
-    b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
+    // Always keep CSS vars in sync (used by spawn/remove animations).
     b.el.style.setProperty("--bx", `${b.x}px`);
     b.el.style.setProperty("--by", `${b.y}px`);
+    // Don't fight the spawn keyframes — they own the transform during spawn.
+    if (b.spawning) return;
+    b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
   }
 
   function spawnFromPool() {
@@ -453,11 +644,15 @@ import { URL_BASE } from "@/config";
     }
 
     state.score += b.benefit.points;
-    const display = Math.max(0, state.score);
     updateScoreUI();
 
     const isWin = b.benefit.real;
     const pts = Math.abs(b.benefit.points);
+
+    if (isWin) {
+      state.found += 1;
+      updateFoundUI();
+    }
 
     // Replace content with feedback message, keeping height
     b.el.classList.remove("variant-1", "variant-2", "variant-3", "variant-4");
@@ -467,10 +662,10 @@ import { URL_BASE } from "@/config";
     `;
 
     if (isWin) {
-      try { audioWin.currentTime = 0; audioWin.play().catch(() => {}); } catch {}
+      playSound(audioWin);
       fireConfettiAt(b);
     } else {
-      try { audioFail.currentTime = 0; audioFail.play().catch(() => {}); } catch {}
+      playSound(audioFail);
     }
 
     // Schedule removal
@@ -515,6 +710,13 @@ import { URL_BASE } from "@/config";
       b.el.remove();
       const idx = state.active.indexOf(b);
       if (idx >= 0) state.active.splice(idx, 1);
+
+      // End game when all 8 real benefits have been caught
+      if (state.found >= 8) {
+        finalize();
+        return;
+      }
+
       spawnFromPool();
       if (state.pool.length === 0 && state.active.length === 0) {
         finalize();
@@ -532,7 +734,8 @@ import { URL_BASE } from "@/config";
     const H = pf.height;
 
     for (const b of state.active) {
-      if (b.paused) continue;
+      // Spawning and paused bubbles don't move, but stay as static obstacles.
+      if (b.paused || b.spawning) continue;
       b.x += b.vx;
       b.y += b.vy;
       if (b.x < 0) { b.x = 0; b.vx = Math.abs(b.vx); }
@@ -541,23 +744,41 @@ import { URL_BASE } from "@/config";
       if (b.y + b.h > H) { b.y = H - b.h; b.vy = -Math.abs(b.vy); }
     }
 
-    // Pairwise collisions
+    // Pairwise collisions — spawning bubbles act as static obstacles
+    // (other bubbles bounce off them but the spawning ones don't move).
     for (let i = 0; i < state.active.length; i++) {
       const a = state.active[i];
-      if (a.paused) continue;
       for (let j = i + 1; j < state.active.length; j++) {
         const c = state.active[j];
-        if (c.paused) continue;
-        if (rectsOverlap(a.x, a.y, a.w, a.h, c.x, c.y, c.w, c.h)) {
-          // Compute overlap on each axis
-          const overlapX = Math.min(a.x + a.w, c.x + c.w) - Math.max(a.x, c.x);
-          const overlapY = Math.min(a.y + a.h, c.y + c.h) - Math.max(a.y, c.y);
-          if (overlapX < overlapY) {
-            // Resolve on X axis
+        if (!rectsOverlap(a.x, a.y, a.w, a.h, c.x, c.y, c.w, c.h)) continue;
+        const aStatic = a.paused || a.spawning;
+        const cStatic = c.paused || c.spawning;
+        if (aStatic && cStatic) continue;
+
+        const overlapX = Math.min(a.x + a.w, c.x + c.w) - Math.max(a.x, c.x);
+        const overlapY = Math.min(a.y + a.h, c.y + c.h) - Math.max(a.y, c.y);
+        if (overlapX < overlapY) {
+          // Resolve on X axis
+          if (aStatic) {
+            // Only c moves; push c fully and flip its vx
+            if (c.x < a.x) c.x -= overlapX; else c.x += overlapX;
+            c.vx = -c.vx;
+          } else if (cStatic) {
+            if (a.x < c.x) a.x -= overlapX; else a.x += overlapX;
+            a.vx = -a.vx;
+          } else {
             const push = overlapX / 2;
             if (a.x < c.x) { a.x -= push; c.x += push; }
             else { a.x += push; c.x -= push; }
             const tmp = a.vx; a.vx = c.vx; c.vx = tmp;
+          }
+        } else {
+          if (aStatic) {
+            if (c.y < a.y) c.y -= overlapY; else c.y += overlapY;
+            c.vy = -c.vy;
+          } else if (cStatic) {
+            if (a.y < c.y) a.y -= overlapY; else a.y += overlapY;
+            a.vy = -a.vy;
           } else {
             const push = overlapY / 2;
             if (a.y < c.y) { a.y -= push; c.y += push; }
@@ -583,7 +804,7 @@ import { URL_BASE } from "@/config";
     modal.classList.remove("hidden");
     if (finalScore === 100) {
       rainConfetti(3000);
-      try { audioWin.currentTime = 0; audioWin.play().catch(() => {}); } catch {}
+      playSound(audioWin);
     }
   }
 
@@ -594,15 +815,32 @@ import { URL_BASE } from "@/config";
     state.active = [];
     state.pool = shuffle([...REAL, ...FAKE]);
     state.score = 0;
+    state.found = 0;
     state.interactionStarted = false;
     btnFinish.disabled = true;
     btnFinish.classList.add("opacity-50");
     modal.classList.add("hidden");
     updateScoreUI();
     updateRemainingUI();
+    updateFoundUI();
     detectMode();
-    spawnFromPool();
-    if (state.isDesktop) state.rafId = requestAnimationFrame(loop);
+    waitForPlayfieldReady(() => {
+      spawnFromPool();
+      if (state.isDesktop) state.rafId = requestAnimationFrame(loop);
+    });
+  }
+
+  // Wait until the playfield has a usable size before placing bubbles.
+  // Critical on iPad / Safari where layout settles a few frames after mount.
+  function waitForPlayfieldReady(cb: () => void, attempts = 0) {
+    const pf = playfield.getBoundingClientRect();
+    const { w, h } = bubbleSize();
+    const ready = !state.isDesktop || (pf.width >= w * 1.2 && pf.height >= h * 1.2);
+    if (ready || attempts > 30) {
+      cb();
+      return;
+    }
+    requestAnimationFrame(() => waitForPlayfieldReady(cb, attempts + 1));
   }
 
   function detectMode() {
@@ -628,15 +866,25 @@ import { URL_BASE } from "@/config";
   });
 
   // Repositioning on resize within same mode
-  window.addEventListener("resize", () => {
+  function clampActiveBubblesToPlayfield() {
     if (!state.isDesktop) return;
     const pf = playfield.getBoundingClientRect();
+    if (pf.width === 0 || pf.height === 0) return;
     for (const b of state.active) {
-      b.x = Math.min(b.x, Math.max(0, pf.width - b.w));
-      b.y = Math.min(b.y, Math.max(0, pf.height - b.h));
+      b.x = Math.min(Math.max(0, b.x), Math.max(0, pf.width - b.w));
+      b.y = Math.min(Math.max(0, b.y), Math.max(0, pf.height - b.h));
       applyTransform(b);
     }
-  });
+  }
+
+  window.addEventListener("resize", clampActiveBubblesToPlayfield);
+
+  // ResizeObserver catches container size changes that 'resize' may miss
+  // (iPad Safari URL bar collapse/expand, orientation changes, content reflow).
+  if (typeof ResizeObserver !== "undefined") {
+    const ro = new ResizeObserver(() => clampActiveBubblesToPlayfield());
+    ro.observe(playfield);
+  }
 
   // Boot
   resetGame();

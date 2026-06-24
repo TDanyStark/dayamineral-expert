@@ -64,15 +64,22 @@ import { URL_BASE } from "@/config";
   >
   </div>
 
-  <!-- References (game screen) -->
-  <p class="w-full max-w-7xl mx-auto mt-8 text-white text-xs leading-snug">
-    <span class="font-bold">Referencias</span>
-    <span class="font-bold">1.</span> Garg V, Lin J, Gadzhieva-Moore A, et al. The role of multivitamin and mineral supplements in supporting health and well-being: a retrospective cross-sectional study in Taiwan. J Health Popul Nutr. 2025;44(1):423.
-    <span class="font-bold">2.</span> Harvard Health Publishing. Making sense of vitamins and minerals: choosing the foods and nutrients you need to stay healthy [Internet]. Boston (MA): Harvard Medical School; 2022. Disponible en: https://n9.cl/peog1
-    <span class="font-bold">3.</span> Office of Dietary Supplements. Choline: fact sheet for health professionals [Internet]. Bethesda (MD): National Institutes of Health; 2024. Disponible en: https://n9.cl/du2tx
-    <span class="font-bold">4.</span> Meixner M. Inositol: benefits, side effects and dosage [Internet]. Healthline; 2023. Disponible en: https://n9.cl/8wm3v
-    <span class="font-bold">5.</span> Lee CY. Effects of dietary vitamins on obesity-related metabolic parameters. J Nutr Sci. 2023 Apr 12;12:e47.
-  </p>
+  <!-- References (game screen) + legal note -->
+  <div
+    class="w-full max-w-7xl mx-auto mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-12"
+  >
+    <p class="text-white text-xs leading-snug md:flex-1">
+      <span class="font-bold">Referencias</span>
+      <span class="font-bold">1.</span> Garg V, Lin J, Gadzhieva-Moore A, et al. The role of multivitamin and mineral supplements in supporting health and well-being: a retrospective cross-sectional study in Taiwan. J Health Popul Nutr. 2025;44(1):423.
+      <span class="font-bold">2.</span> Harvard Health Publishing. Making sense of vitamins and minerals: choosing the foods and nutrients you need to stay healthy [Internet]. Boston (MA): Harvard Medical School; 2022. Disponible en: https://n9.cl/peog1
+      <span class="font-bold">3.</span> Office of Dietary Supplements. Choline: fact sheet for health professionals [Internet]. Bethesda (MD): National Institutes of Health; 2024. Disponible en: https://n9.cl/du2tx
+      <span class="font-bold">4.</span> Meixner M. Inositol: benefits, side effects and dosage [Internet]. Healthline; 2023. Disponible en: https://n9.cl/8wm3v
+      <span class="font-bold">5.</span> Lee CY. Effects of dietary vitamins on obesity-related metabolic parameters. J Nutr Sci. 2023 Apr 12;12:e47.
+    </p>
+    <p class="text-white text-[10px] leading-tight text-center md:text-right md:whitespace-nowrap md:shrink-0">
+      USO EXCLUSIVO PARA PROFESIONALES MÉDICOS <b>CAC-26-0600</b>
+    </p>
+  </div>
 
   <!-- Hidden audio -->
   <audio id="game-audio-win" src={`${URL_BASE}/sounds/confetti.mp3`} preload="auto"></audio>

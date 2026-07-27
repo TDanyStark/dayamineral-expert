@@ -49,7 +49,7 @@ import { URL_BASE } from "@/config";
         id="game-btn-finish"
         type="button"
         disabled
-        class="text-white text-sm md:text-base font-bold py-2 px-5 rounded-full bg-linear-(--gradient-purple) opacity-50 disabled:cursor-not-allowed hover:opacity-100 enabled:opacity-100 transition"
+        class="text-white text-sm md:text-base font-bold py-2 px-5 rounded-full enabled:bg-[#4E026C] opacity-50 disabled:cursor-not-allowed hover:opacity-100 enabled:opacity-100 transition"
       >
         FINALIZAR
       </button>
@@ -181,7 +181,7 @@ import { URL_BASE } from "@/config";
     opacity: 0;
     backdrop-filter: blur(24px) saturate(140%);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
-    background: rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, rgba(222, 138, 23, 0.6), rgba(222, 138, 23, 0.28));
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
@@ -243,19 +243,6 @@ import { URL_BASE } from "@/config";
       0 12px 30px rgba(0, 0, 0, 0.25);
   }
 
-  .game-bubble.variant-1 {
-    background: linear-gradient(135deg, rgba(253, 0, 21, 0.32), rgba(255, 255, 255, 0.14));
-  }
-  .game-bubble.variant-2 {
-    background: linear-gradient(135deg, rgba(174, 0, 97, 0.36), rgba(255, 255, 255, 0.12));
-  }
-  .game-bubble.variant-3 {
-    background: linear-gradient(135deg, rgba(222, 138, 23, 0.28), rgba(174, 0, 97, 0.22));
-  }
-  .game-bubble.variant-4 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(174, 0, 97, 0.16));
-  }
-
   .game-bubble .bubble-icon {
     width: 2rem;
     height: 2rem;
@@ -271,7 +258,7 @@ import { URL_BASE } from "@/config";
   }
 
   .game-bubble.feedback-win {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.6), rgba(34, 197, 94, 0.28));
+    background: #4E026C;
     border-color: rgba(255, 255, 255, 0.6);
   }
   .game-bubble.feedback-lose {
@@ -531,8 +518,7 @@ import { URL_BASE } from "@/config";
 
   function createBubble(benefit: Benefit): ActiveBubble {
     const el = document.createElement("div");
-    const variant = (Math.floor(Math.random() * 4) + 1);
-    el.className = `game-bubble variant-${variant}`;
+    el.className = "game-bubble";
     el.innerHTML = `
       <img class="bubble-icon" src="${ICON_TOUCH}" alt="touch" />
       <span class="bubble-text">${benefit.text}</span>
@@ -682,7 +668,6 @@ import { URL_BASE } from "@/config";
     }
 
     // Replace content with feedback message, keeping height
-    b.el.classList.remove("variant-1", "variant-2", "variant-3", "variant-4");
     b.el.classList.add(isWin ? "feedback-win" : "feedback-lose", "feedback-content");
     b.el.innerHTML = `
       <span class="bubble-text">HA ${isWin ? "GANADO" : "PERDIDO"} ${pts} DAYAPOINTS</span>
